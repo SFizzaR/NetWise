@@ -15,22 +15,29 @@ const Modal = ({ result, onClose }) => {
             zIndex: 9999
         }}>
             <div style={{
-                backgroundColor: "white",
+                backgroundColor: "#1f2f98",
                 padding: "20px",
                 borderRadius: "10px",
-                color: "black",
+                color: "white",
                 width: "90%",
                 maxWidth: "700px",
                 maxHeight: "90vh",
                 overflowY: "auto",
-                boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)"
+                boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)",
+                textAlign: "center",
+                alignItems: "center",
+                alignContent: "center"
             }}>
-                <h3 style={{ textAlign: "center", marginBottom: "20px" }}>Subnet Details</h3>
+                <h3 style={{ textAlign: "center", marginBottom: "20px", fontSize: "30px" }}>Subnet Details</h3>
 
                 <table style={{
                     width: "100%",
                     borderCollapse: "collapse",
-                    marginBottom: "20px"
+                    marginBottom: "20px",
+                    border: "2px solid #00f0ff",
+                    borderRadius: "12px",
+                    boxShadow: "0 0 15px #00f0ff, 0 0 30px #00f0ff",
+                    overflow: "hidden",
                 }}>
                     <tbody>
                         <tr>
@@ -88,13 +95,26 @@ const Modal = ({ result, onClose }) => {
                     <button
                         onClick={onClose}
                         style={{
-                            backgroundColor: "#32cd32",
-                            color: "white",
-                            border: "none",
-                            padding: "10px 20px",
-                            borderRadius: "5px",
+                            backgroundColor: "#111",
+                            color: "#00f0ff",
+                            border: "2px solid #00f0ff",
+                            padding: "10px 24px",
+                            borderRadius: "8px",
                             cursor: "pointer",
-                            fontSize: "16px"
+                            fontSize: "16px",
+                            fontWeight: "bold",
+                            boxShadow: "0 0 10px #00f0ff, 0 0 20px #00f0ff",
+                            transition: "all 0.3s ease",
+                        }}
+                        onMouseOver={(e) => {
+                            e.target.style.backgroundColor = "#00f0ff";
+                            e.target.style.color = "black";
+                            e.target.style.boxShadow = "0 0 15px #00f0ff, 0 0 30px #00f0ff";
+                        }}
+                        onMouseOut={(e) => {
+                            e.target.style.backgroundColor = "#111";
+                            e.target.style.color = "#00f0ff";
+                            e.target.style.boxShadow = "0 0 10px #00f0ff, 0 0 20px #00f0ff";
                         }}
                     >
                         Close
