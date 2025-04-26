@@ -14,6 +14,16 @@ export default function Home() {
     const [modalVisible, setModalVisible] = useState(false);
     const [resultData, setResultData] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [showTitle, setShowTitle] = useState(window.innerWidth > 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setShowTitle(window.innerWidth > 768);
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
 
 
     useEffect(() => {
@@ -172,34 +182,35 @@ export default function Home() {
 
                     <div style={{ display: "flex", flexDirection: "column" }}>
                         {/* Logo & Title */}
-                        <div style={{
-                            position: "absolute",
-                            top: "58%",
-                            padding: "2em",
-                            textAlign: "left",
-                            width: "300px",
-                            alignSelf: "flex-start",
-                        }}>
+                        {showTitle && (
                             <div style={{
-                                display: "flex",
-                                flexDirection: "row"
+                                position: "absolute",
+                                top: "65%",
+                                left: "5%",
+                                padding: "1em",
+                                textAlign: "left",
+                                width: "min(80vw, 300px)",
+                                alignSelf: "flex-start",
                             }}>
-                                <img src={logo}
-                                    width="24%"
-                                    height="24%"
-                                    style={{
-                                        marginRight: "5px"
-                                    }} />
-                                <h1 style={{
-                                    fontSize: "4em",
+                                <div style={{ display: "flex", flexDirection: "row" }}>
+                                    <img src={logo} width="24%" height="24%" style={{ marginRight: "5px" }} />
+                                    <h1 style={{
+                                        fontSize: "4em",
+                                        color: "#ffff",
+                                        marginBottom: "2px",
+                                        fontFamily: "monospace"
+                                    }}>
+                                        NetWise
+                                    </h1>
+                                </div>
+                                <h3 style={{
                                     color: "#ffff",
-                                    marginBottom: "2px",
-                                    fontFamily: "monospace"
-                                }}>
-                                    NetWise</h1>
+                                    fontFamily: "monospace",
+                                    fontSize: "17px"
+                                }}>Smart Subnet Calculator</h3>
                             </div>
-                            <h3 style={{ color: "#ffff", fontFamily: "monospace", fontSize: "17px" }}>Smart Subnet Calculator</h3>
-                        </div>
+                        )}
+
 
                         {/* Calculator UI */}
                         <div
@@ -208,8 +219,10 @@ export default function Home() {
                                 top: "50%",
                                 right: "10%",
                                 transform: "translateY(-50%)",
-                                width: "25%",
-                                height: "70%",
+                                width: "25vw",
+                                minWidth: "280px",
+                                maxWidth: "400px",
+                                height: "70vh",
                                 background: "linear-gradient(135deg, #1ca7e3, #1f2f98)",
                                 borderRadius: "10px",
                                 padding: "2em",
@@ -222,6 +235,7 @@ export default function Home() {
                                 borderBottom: "4px solid rgba(255, 255, 255, 0.3)",
                                 boxShadow: "0 0 15px rgba(56, 149, 211, 0.7)",
                             }}
+
                         >
                             {/* Display Screen */}
                             <input
