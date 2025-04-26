@@ -10,10 +10,18 @@ def calculate():
     data = request.get_json()
     ip = data.get("ip")
     subnet = data.get("subnet")
+    subnet_mask = data.get("subnet_mask")
 
     # Validate IP address
     if not is_valid_ip(ip):
         return jsonify({"error": "Invalid IP address"}), 400
+    
+    if subnet is None and subnet_mask:
+        try:
+            subnet = ipaddress.IPv4Network(f"0.0.0.0/{subnet_mask}").prefixlen
+        except Exception as e:
+            return jsonify({"error": f"Invalid subnet mask: {str(e)}"}), 400
+
 
     # Assign default subnet based on IP class if none is provided
     if subnet is None:
@@ -31,6 +39,7 @@ def calculate():
         network = ipaddress.ip_network(f"{ip}/{subnet}", strict=False)
         hosts = list(network.hosts())
         usable_hosts = len(hosts)
+
 
         return jsonify({
             "network": str(network.network_address),
