@@ -22,16 +22,20 @@ export default function LoadingPage() {
             <Lottie
                 animationData={spinner}
                 loop={true}
-                style={{ width: 300, height: 300 }}
+                style={{
+                    width: 300,
+                    height: 300
+                }}
             />
-            <p style={{
-                marginTop: "20px",
-                fontSize: "1.5em",
-                animation: "blinker 1.5s linear infinite",
-            }}>
+            <p
+                style={{
+                    marginTop: "20px",
+                    fontSize: "1.5em",
+                    animation: "blinker 1.5s linear infinite",
+                }}
+            >
                 Fetching details...
             </p>
-
             {/* Add a simple blink animation */}
             <style>
                 {`
