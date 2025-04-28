@@ -1,87 +1,65 @@
+# Import necessary libraries
 from flask import Flask, request, jsonify
-import ipaddress
 from flask_cors import CORS
+from subnet_calculator import perform_subnet_calculation, get_ip_class, is_valid_ip 
+from vlsm_calculator import perform_vlsm_calculation, calculate_subnet_size
 
+# Create a Flask app instance
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/calculate', methods=['POST'])
+@app.route('/calculate_subnet', methods=['POST'])
 def calculate():
-    data = request.get_json()
-    ip = data.get("ip")
-    subnet = data.get("subnet")
-    subnet_mask = data.get("subnet_mask")
+    try:
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({"error": "Missing JSON body"}), 400
 
-    # Validate IP address
-    if not is_valid_ip(ip):
-        return jsonify({"error": "Invalid IP address"}), 400
+        ip = data.get("ip")
+        subnet = data.get("subnet")
+        subnet_mask = data.get("subnet_mask")
+
+        if not ip:
+            return jsonify({"error": "Missing IP address"}), 400
+
+        result = perform_subnet_calculation(ip, subnet, subnet_mask)
+        
+        return jsonify(result), 200
+
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
     
-    if subnet is None and subnet_mask:
-        try:
-            subnet = ipaddress.IPv4Network(f"0.0.0.0/{subnet_mask}").prefixlen
-        except Exception as e:
-            return jsonify({"error": f"Invalid subnet mask: {str(e)}"}), 400
-
-
-    # Assign default subnet based on IP class if none is provided
-    if subnet is None:
-        ip_class = get_ip_class(ip)
-        if ip_class == 'A':
-            subnet = 8
-        elif ip_class == 'B':
-            subnet = 16
-        elif ip_class == 'C':
-            subnet = 24
-        else:
-            subnet = 24  # fallback
-
-    try:
-        network = ipaddress.ip_network(f"{ip}/{subnet}", strict=False)
-        hosts = list(network.hosts())
-        usable_hosts = len(hosts)
-
-
-        return jsonify({
-            "network": str(network.network_address),
-            "subnet_mask": str(network.netmask),
-            "CIDR": f"/{network.prefixlen}",
-            "broadcast": str(network.broadcast_address),
-            "first_usable": str(hosts[0]) if usable_hosts > 0 else None,
-            "last_usable": str(hosts[-1]) if usable_hosts > 0 else None,
-            "total_hosts": network.num_addresses,
-            "usable_hosts": usable_hosts,
-            "wildcard_mask": str(network.hostmask),
-            "is_private": network.is_private,
-            "ip_class": get_ip_class(ip),
-        })
-
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "Internal server error"}), 500
 
-def get_ip_class(ip):
+@app.route('/calculate_vlsm', methods=['POST'])
+def vlsm():
     try:
-        first_octet = int(ip.split('.')[0])
-        if 1 <= first_octet <= 126:
-            return 'A'
-        elif 128 <= first_octet <= 191:
-            return 'B'
-        elif 192 <= first_octet <= 223:
-            return 'C'
-        elif 224 <= first_octet <= 239:
-            return 'D (Multicast)'
-        elif 240 <= first_octet <= 254:
-            return 'E (Experimental)'
-        else:
-            return 'Unknown'
-    except:
-        return 'Unknown'
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({"error": "Missing JSON body"}), 400
 
-def is_valid_ip(ip):
-    try:
-        ipaddress.ip_address(ip)
-        return True
-    except ValueError:
-        return False
+        base_network = data.get("base_network")
+        host_requirements = data.get("host_requirements")
+        base_ip = data.get("base_ip")
+
+        if not base_network or not host_requirements or not base_ip:
+            return jsonify({"error": "Both 'base_network', 'host_requirements', and 'base_ip' are required"}), 400
+
+        result = perform_vlsm_calculation(base_network, base_ip, host_requirements)
+
+        return jsonify(result), 200
+
+    except ValueError as e:
+        print(f"ValueError occurred: {e}")   # <-- ADD THIS
+        return jsonify({"error": str(e)}), 400
+    
+    except Exception as e:
+        print(f"Exception occurred: {e}")    # <-- ADD THIS
+        return jsonify({"error": "Internal server error"}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
