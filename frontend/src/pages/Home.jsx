@@ -6,17 +6,17 @@ import logo from "../assets/logo.png";
 import SubnetModal from "../components/subnetModal.jsx";
 import VlsmModal from "../components/VLSMmodal.jsx";
 import '../font.css';
-import LoadingPage from "../components/LoadingPage.jsx";
 import SubnetCalculator from "../components/subnetCalculator.jsx";
 import VLSMCalculator from "../components/vlsmCalculator.jsx";
+import LoadingPage from "../components/LoadingPage.jsx";
 
 export default function Home() {
     const [init, setInit] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [resultData, setResultData] = useState(null);
-    const [loading, setLoading] = useState(false);
     const [showTitle, setShowTitle] = useState(window.innerWidth > 768);
     const [showvlsm, setvlsm] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -77,6 +77,7 @@ export default function Home() {
     const handleMode = () => {
         setvlsm(prev => !prev);
     };
+
 
     if (!init) return null;
 
@@ -174,16 +175,17 @@ export default function Home() {
                         <div>
                             {showvlsm ? (
                                 <VLSMCalculator
-                                    setLoading={setLoading}
                                     setResultData={setResultData}
                                     setModalVisible={setModalVisible}
+                                    setLoading={setLoading}
                                 />
                             ) : (
                                 <SubnetCalculator
-                                    setLoading={setLoading}
                                     setResultData={setResultData}
                                     setModalVisible={setModalVisible}
+                                    setLoading={setLoading}
                                 />
+
                             )}
                         </div>
                     </div>
@@ -204,6 +206,7 @@ export default function Home() {
                             />
                         )
                     )}
+
                 </div>
             )}
         </>
