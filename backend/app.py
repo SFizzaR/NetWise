@@ -1,8 +1,9 @@
 # Import necessary libraries
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from subnet_calculator import perform_subnet_calculation, get_ip_class, is_valid_ip 
 from vlsm_calculator import perform_vlsm_calculation, calculate_subnet_size
+from vlsmvisualization import visualize_vlsm_allocations
 
 # Create a Flask app instance
 app = Flask(__name__)
@@ -53,13 +54,26 @@ def vlsm():
         return jsonify(result), 200
 
     except ValueError as e:
-        print(f"ValueError occurred: {e}")   # <-- ADD THIS
+        print(f"ValueError occurred: {e}")  
         return jsonify({"error": str(e)}), 400
     
     except Exception as e:
-        print(f"Exception occurred: {e}")    # <-- ADD THIS
+        print(f"Exception occurred: {e}")   
         return jsonify({"error": "Internal server error"}), 500
+    
+@app.route('/visualization', methods=['POST'])
+def generate_plot():
+    try:
+        data = request.get_json()
+        subnet_data = data.get('subnet_data')
+        if not subnet_data:
+            return jsonify({"error": "Missing subnet_data"}), 400
 
+        img_buf = visualize_vlsm_allocations(subnet_data)
+        return send_file(img_buf, mimetype='image/png')
 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 if __name__ == '__main__':
     app.run(debug=True)
