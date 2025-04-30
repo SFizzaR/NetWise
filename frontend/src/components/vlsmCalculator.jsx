@@ -6,7 +6,6 @@ const VLSMCalculator = ({ setResultData, setModalVisible, setLoading }) => {
     const [hostRequirements, setHostRequirements] = useState("");
     const [focusedField, setFocusedField] = useState('input');
 
-
     const handleButtonClick = (value) => {
         if (value === ',' && focusedField !== 'hostRequirements') {
             return;
@@ -57,6 +56,8 @@ const VLSMCalculator = ({ setResultData, setModalVisible, setLoading }) => {
                 const result = await response.json();
                 setResultData(result);
                 setModalVisible(true);
+
+
             } else {
                 const errorData = await response.json();
                 alert(`Error: ${errorData.error}`);
@@ -85,6 +86,7 @@ const VLSMCalculator = ({ setResultData, setModalVisible, setLoading }) => {
     };
 
     return (
+
         <div
             style={{
                 position: "absolute",

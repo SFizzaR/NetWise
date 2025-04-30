@@ -3,15 +3,38 @@ import React from 'react';
 const Modal = ({ result, onClose, title }) => {
     if (!result) return null;
 
+
+    const buttonStyle = {
+        backgroundColor: "#1b5e20",
+        color: "#66bb6a",
+        border: "2px solid #66bb6a",
+        padding: "10px 24px",
+        borderRadius: "8px",
+        cursor: "pointer",
+        fontSize: "16px",
+        fontWeight: "bold",
+        boxShadow: "0 0 10px #66bb6a, 0 0 20px #66bb6a",
+        transition: "all 0.3s ease",
+        fontFamily: "Orbitron",
+        margin: "0 10px",
+    };
+
+    const hoverIn = (e) => {
+        e.target.style.backgroundColor = "#66bb6a";
+        e.target.style.color = "#1b5e20";
+        e.target.style.boxShadow = "0 0 15px #66bb6a, 0 0 30px #66bb6a";
+    };
+
+    const hoverOut = (e) => {
+        e.target.style.backgroundColor = "#1b5e20";
+        e.target.style.color = "#66bb6a";
+        e.target.style.boxShadow = "0 0 10px #66bb6a, 0 0 20px #66bb6a";
+    };
+
     const renderValue = (value) => {
         if (Array.isArray(value)) {
             return (
-                <ul
-                    style={{
-                        listStyle: "none",
-                        paddingLeft: 0,
-                    }}
-                >
+                <ul style={{ listStyle: "none", paddingLeft: 0 }}>
                     {value.map((item, idx) => (
                         <li key={idx} style={{ marginBottom: "5px" }}>
                             {typeof item === "object" ? renderValue(item) : item}
@@ -21,13 +44,7 @@ const Modal = ({ result, onClose, title }) => {
             );
         } else if (typeof value === "object" && value !== null) {
             return (
-                <table
-                    style={{
-                        width: "100%",
-                        borderCollapse: "collapse",
-                        marginBottom: "10px",
-                    }}
-                >
+                <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "10px" }}>
                     <tbody>
                         {Object.keys(value).map((subKey) => (
                             <tr key={subKey}>
@@ -40,7 +57,7 @@ const Modal = ({ result, onClose, title }) => {
                                         textAlign: "left",
                                         verticalAlign: "top",
                                         width: "40%",
-                                        borderBottom: "1px solid #3b9a57", // Green border
+                                        borderBottom: "1px solid #3b9a57",
                                     }}
                                 >
                                     {subKey.replace(/_/g, " ").toUpperCase()}
@@ -52,7 +69,7 @@ const Modal = ({ result, onClose, title }) => {
                                         padding: "6px",
                                         textAlign: "left",
                                         verticalAlign: "top",
-                                        borderBottom: "1px solid #3b9a57", // Green border
+                                        borderBottom: "1px solid #3b9a57",
                                     }}
                                 >
                                     {renderValue(value[subKey])}
@@ -75,7 +92,7 @@ const Modal = ({ result, onClose, title }) => {
                 left: "0",
                 width: "100vw",
                 height: "100vh",
-                backgroundColor: "rgba(0, 0, 0, 0.7)", // Darker background for contrast
+                backgroundColor: "rgba(0, 0, 0, 0.7)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -84,7 +101,7 @@ const Modal = ({ result, onClose, title }) => {
         >
             <div
                 style={{
-                    backgroundColor: "#1b5e20", // Dark green background
+                    backgroundColor: "#1b5e20",
                     padding: "20px",
                     borderRadius: "10px",
                     color: "white",
@@ -102,7 +119,7 @@ const Modal = ({ result, onClose, title }) => {
                         marginBottom: "20px",
                         fontSize: "30px",
                         fontFamily: "Orbitron",
-                        color: "#81c784", // Light green for title
+                        color: "#81c784",
                     }}
                 >
                     {title || "Details"}
@@ -113,17 +130,16 @@ const Modal = ({ result, onClose, title }) => {
                         width: "100%",
                         borderCollapse: "collapse",
                         marginBottom: "20px",
-                        border: "2px solid #66bb6a", // Light green border
+                        border: "2px solid #66bb6a",
                         borderRadius: "12px",
-                        boxShadow: "0 0 15px #66bb6a, 0 0 30px #66bb6a", // Green glow
+                        boxShadow: "0 0 15px #66bb6a, 0 0 30px #66bb6a",
                         overflow: "hidden",
                     }}
                 >
                     <tbody>
-                        {/* Loop through the result and ensure hostRequirement is displayed first */}
                         {result.map((item, index) => (
                             <React.Fragment key={index}>
-                                <tr style={{ borderBottom: "2px solid #81c784" }}> {/* Green line separator */}
+                                <tr style={{ borderBottom: "2px solid #81c784" }}>
                                     <td
                                         style={{
                                             fontFamily: "monospace",
@@ -133,7 +149,7 @@ const Modal = ({ result, onClose, title }) => {
                                             textAlign: "left",
                                             verticalAlign: "top",
                                             width: "40%",
-                                            backgroundColor: "#388e3c", // Dark green background for the row
+                                            backgroundColor: "#388e3c",
                                             color: "white",
                                         }}
                                     >
@@ -146,14 +162,13 @@ const Modal = ({ result, onClose, title }) => {
                                             padding: "10px",
                                             textAlign: "left",
                                             verticalAlign: "top",
-                                            backgroundColor: "#81c784", // Light green for host requirement value
+                                            backgroundColor: "#81c784",
                                         }}
                                     >
                                         {item.hostRequirement}
                                     </td>
                                 </tr>
 
-                                {/* Render other fields */}
                                 {Object.keys(item).map((key) => {
                                     if (key !== "hostRequirement") {
                                         return (
@@ -180,7 +195,9 @@ const Modal = ({ result, onClose, title }) => {
                                                         padding: "10px",
                                                         textAlign: "left",
                                                         verticalAlign: "top",
-                                                        backgroundColor: "#c8e6c9", // Lighter green for the values
+                                                        backgroundColor: "#c8e6c9",
+                                                        color: "#1b5e20",
+                                                        fontWeight: "bold",
                                                     }}
                                                 >
                                                     {renderValue(item[key])}
@@ -195,34 +212,18 @@ const Modal = ({ result, onClose, title }) => {
                     </tbody>
                 </table>
 
-                <button
-                    onClick={onClose}
-                    style={{
-                        backgroundColor: "#1b5e20", // Dark green button
-                        color: "#66bb6a", // Light green text
-                        border: "2px solid #66bb6a",
-                        padding: "10px 24px",
-                        borderRadius: "8px",
-                        cursor: "pointer",
-                        fontSize: "16px",
-                        fontWeight: "bold",
-                        boxShadow: "0 0 10px #66bb6a, 0 0 20px #66bb6a",
-                        transition: "all 0.3s ease",
-                        fontFamily: "Orbitron",
-                    }}
-                    onMouseOver={(e) => {
-                        e.target.style.backgroundColor = "#66bb6a"; // Change to light green on hover
-                        e.target.style.color = "#1b5e20"; // Dark green text on hover
-                        e.target.style.boxShadow = "0 0 15px #66bb6a, 0 0 30px #66bb6a";
-                    }}
-                    onMouseOut={(e) => {
-                        e.target.style.backgroundColor = "#1b5e20";
-                        e.target.style.color = "#66bb6a";
-                        e.target.style.boxShadow = "0 0 10px #66bb6a, 0 0 20px #66bb6a";
-                    }}
-                >
-                    Close
-                </button>
+                <div style={{ textAlign: "center", marginTop: "20px" }}>
+                    <button
+                        onClick={onClose}
+                        onMouseOver={hoverIn}
+                        onMouseOut={hoverOut}
+                        style={buttonStyle}
+                    >
+                        Close
+                    </button>
+
+
+                </div>
             </div>
         </div>
     );

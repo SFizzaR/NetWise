@@ -19,7 +19,6 @@ const SubnetCalculator = ({ setResultData, setModalVisible, setLoading }) => {
     const [input, setInput] = useState("");
     const [subnetMask, setSubnetMask] = useState("");
 
-
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === "Enter") {
@@ -91,6 +90,7 @@ const SubnetCalculator = ({ setResultData, setModalVisible, setLoading }) => {
             setResultData(data);
             setModalVisible(true);
 
+
         } catch (error) {
             alert(`Request failed: ${error.message}\nCheck if Flask server is running and CORS is allowed.`);
         } finally {
@@ -99,6 +99,7 @@ const SubnetCalculator = ({ setResultData, setModalVisible, setLoading }) => {
     };
 
     return (
+
         <div
             style={{
                 position: "absolute",
@@ -226,6 +227,7 @@ const SubnetCalculator = ({ setResultData, setModalVisible, setLoading }) => {
                 <button style={{ ...buttonStyle, flex: 1, background: "#1f2f98" }} onClick={() => handleButtonClick('/')}>/</button>
             </div>
         </div>
+
     );
 };
 
