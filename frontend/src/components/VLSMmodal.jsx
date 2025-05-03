@@ -225,14 +225,6 @@ const Modal = ({ result, onClose, title }) => {
                 </table>
 
                 <div style={{ textAlign: "center", marginTop: "20px" }}>
-                    <button
-                        onClick={handleShowWorkings}
-                        onMouseOver={hoverIn}
-                        onMouseOut={hoverOut}
-                        style={buttonStyle}
-                    >
-                        Show Working
-                    </button>
 
                     <button
                         onClick={() => navigate('/vlsm-visualizer', { state: { subnets: result.subnets } })}
@@ -242,17 +234,24 @@ const Modal = ({ result, onClose, title }) => {
                     >
                         Show Visualization
                     </button>
-
-                </div>
-                <br />
-                <button
-                        onClick={onClose}
+                    <button
+                        onClick={handleShowWorkings}
                         onMouseOver={hoverIn}
                         onMouseOut={hoverOut}
                         style={buttonStyle}
                     >
-                        Close
+                        Show Working
                     </button>
+                </div>
+                <br />
+                <button
+                    onClick={onClose}
+                    onMouseOver={hoverIn}
+                    onMouseOut={hoverOut}
+                    style={buttonStyle}
+                >
+                    Close
+                </button>
             </div>
         </div>
     );
