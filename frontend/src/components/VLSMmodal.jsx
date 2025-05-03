@@ -226,14 +226,6 @@ const Modal = ({ result, onClose, title }) => {
 
                 <div style={{ textAlign: "center", marginTop: "20px" }}>
                     <button
-                        onClick={onClose}
-                        onMouseOver={hoverIn}
-                        onMouseOut={hoverOut}
-                        style={buttonStyle}
-                    >
-                        Close
-                    </button>
-                    <button
                         onClick={handleShowWorkings}
                         onMouseOver={hoverIn}
                         onMouseOut={hoverOut}
@@ -252,6 +244,15 @@ const Modal = ({ result, onClose, title }) => {
                     </button>
 
                 </div>
+                <br />
+                <button
+                        onClick={onClose}
+                        onMouseOver={hoverIn}
+                        onMouseOut={hoverOut}
+                        style={buttonStyle}
+                    >
+                        Close
+                    </button>
             </div>
         </div>
     );
