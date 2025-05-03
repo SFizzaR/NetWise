@@ -90,7 +90,6 @@ const SubnetCalculator = ({ setResultData, setModalVisible, setLoading }) => {
             setResultData(data);
             setModalVisible(true);
 
-
         } catch (error) {
             alert(`Request failed: ${error.message}\nCheck if Flask server is running and CORS is allowed.`);
         } finally {

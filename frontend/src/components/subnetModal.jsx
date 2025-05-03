@@ -29,6 +29,17 @@ const Modal = ({ result, onClose }) => {
     const handleShowVisualization = () => {
         navigate('/subnet-visualization', { state: { result } })
     }
+
+    const handleShowWorkings = () => {
+        // Only pass subnet, CIDR, and subnet mask to the next page
+        console.log(result.ip)
+        const dataToPass = {
+            ip: result.ip,
+            CIDR: result.CIDR,
+            subnet_mask: result.subnet_mask
+        };
+        navigate('/subnet-working', { state: dataToPass });
+    };
     if (!result) return null;
 
     return (
@@ -121,23 +132,7 @@ const Modal = ({ result, onClose }) => {
                     </tbody>
                 </table>
 
-                <div
-                    style={{
-                        textAlign: "center",
-                        marginTop: "20px"
-                    }}
-                >
-                    <button
-                        onClick={onClose}
-                        onMouseEnter={() => setHovered("close")}
-                        onMouseLeave={() => setHovered("")}
-                        style={{
-                            ...buttonBaseStyle,
-                            ...(hovered === "close" ? hoverStyle : {}),
-                        }}
-                    >
-                        Close
-                    </button>
+                <div style={{ textAlign: "center", marginTop: "20px" }}>
                     <button
                         onClick={handleShowVisualization}
                         onMouseEnter={() => setHovered("visual")}
@@ -149,7 +144,35 @@ const Modal = ({ result, onClose }) => {
                     >
                         Show Visualization
                     </button>
+
+                    <button
+                        onClick={handleShowWorkings}
+                        onMouseEnter={() => setHovered("working")}
+                        onMouseLeave={() => setHovered("")}
+                        style={{
+                            ...buttonBaseStyle,
+                            ...(hovered === "working" ? hoverStyle : {}),
+                        }}
+                    >
+                        Show Workings
+                    </button>
+
+                    <br />
+
+                    <button
+                        onClick={onClose}
+                        onMouseEnter={() => setHovered("close")}
+                        onMouseLeave={() => setHovered("")}
+                        style={{
+                            ...buttonBaseStyle,
+                            ...(hovered === "close" ? hoverStyle : {}),
+                            marginTop: "10px",
+                        }}
+                    >
+                        Close
+                    </button>
                 </div>
+
             </div>
         </div>
     );

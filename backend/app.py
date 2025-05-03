@@ -4,10 +4,13 @@ from flask_cors import CORS
 from subnet_calculator import perform_subnet_calculation, get_ip_class, is_valid_ip 
 from vlsm_calculator import perform_vlsm_calculation, calculate_subnet_size
 from vlsmvisualization import visualize_vlsm_allocations
+from subnet_working import explain_subnetting
+from vlsm_working import vlsm_steps
 
 # Create a Flask app instance
 app = Flask(__name__)
 CORS(app)
+
 
 @app.route('/calculate_subnet', methods=['POST'])
 def calculate():
@@ -61,6 +64,32 @@ def vlsm():
         print(f"Exception occurred: {e}")   
         return jsonify({"error": "Internal server error"}), 500
     
+@app.route('/subnet-working', methods=['POST'])
+def subnet_working():
+    data = request.get_json()
+    ip = data.get('ip')
+    cidr = data.get('cidr')
+    subnet_mask = data.get('subnet_mask')
+
+    try:
+        steps = explain_subnetting(ip, cidr=cidr, subnet_mask=subnet_mask)
+        return jsonify({'steps': steps})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+    
+@app.route('/vlsm-working', methods=['POST'])
+def vlsm_working():
+    data = request.get_json()
+    base_network = data.get('base_network')
+    base_ip = data.get('base_ip')
+    host_requirements = data.get('host_requirements')
+
+    try:
+        steps = vlsm_steps(base_network=base_network, base_ip=base_ip,host_requirements=host_requirements )
+        return jsonify({'steps': steps})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
 @app.route('/visualization', methods=['POST'])
 def generate_plot():
     try:

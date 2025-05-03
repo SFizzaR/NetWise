@@ -1,22 +1,22 @@
 import ipaddress
 
 def perform_subnet_calculation(ip, subnet, subnet_mask):
-    # Validate if the IP is correctly formatted
+    workings = []
+
     if not is_valid_ip(ip):
         raise ValueError("Invalid IP address")
-    
-    # If subnet (CIDR) is not provided but subnet mask is provided
+    workings.append(f"Valid IP address: {ip}")
+
     if subnet is None and subnet_mask:
         try:
-            # Convert subnet mask like '255.255.255.0' to CIDR notation like '/24'
             subnet = ipaddress.IPv4Network(f"0.0.0.0/{subnet_mask}").prefixlen
+            workings.append(f"Converted subnet mask {subnet_mask} to CIDR /{subnet}")
         except Exception:
             raise ValueError("Invalid subnet mask")
 
-    # If subnet is still None after trying above
     if subnet is None:
-        # Deduce default subnet based on IP class
         ip_class = get_ip_class(ip)
+        workings.append(f"No CIDR provided; using default for Class {ip_class}")
         if ip_class == 'A':
             subnet = 8
         elif ip_class == 'B':
@@ -24,34 +24,39 @@ def perform_subnet_calculation(ip, subnet, subnet_mask):
         elif ip_class == 'C':
             subnet = 24
         else:
-            subnet = 24  # default fallback if unknown
+            subnet = 24
 
     try:
-        # Create a network object using the IP and subnet (not strict: allows host IPs, not just network IPs)
         network = ipaddress.ip_network(f"{ip}/{subnet}", strict=False)
-        
-        # Get all usable host IP addresses in the network
         hosts = list(network.hosts())
         usable_hosts = len(hosts)
 
-        # Return a dictionary with all calculated fields
+        workings.append(f"IP/{subnet} gives network: {network.network_address}")
+        workings.append(f"Subnet mask: {network.netmask}")
+        workings.append(f"Wildcard mask (inverse): {network.hostmask}")
+        workings.append(f"Broadcast address: {network.broadcast_address}")
+        workings.append(f"Usable IPs: {hosts[0]} to {hosts[-1]} ({usable_hosts} usable)")
+        workings.append(f"Total IPs (including net + broadcast): {network.num_addresses}")
+
         return {
-            "network": str(network.network_address),  # The network address
-            "subnet_mask": str(network.netmask),      # Subnet mask (e.g., 255.255.255.0)
-            "CIDR": f"/{network.prefixlen}",           # CIDR notation (e.g., /24)
-            "broadcast": str(network.broadcast_address),  # Broadcast address
-            "first_usable": str(hosts[0]) if usable_hosts > 0 else None,  # First usable host IP
-            "last_usable": str(hosts[-1]) if usable_hosts > 0 else None,  # Last usable host IP
-            "total_hosts": network.num_addresses,     # Total number of IPs (including network and broadcast)
-            "usable_hosts": usable_hosts,              # Number of usable host IPs
-            "wildcard_mask": str(network.hostmask),    # Wildcard mask (inverse of subnet mask)
-            "is_private": network.is_private,          # True if IP is private (RFC1918 addresses)
-            "ip_class": get_ip_class(ip),              # Class of IP (A, B, C, etc.)
+            "ip": ip,
+            "network": str(network.network_address),
+            "subnet_mask": str(network.netmask),
+            "CIDR": f"/{network.prefixlen}",
+            "broadcast": str(network.broadcast_address),
+            "first_usable": str(hosts[0]) if usable_hosts > 0 else None,
+            "last_usable": str(hosts[-1]) if usable_hosts > 0 else None,
+            "total_hosts": network.num_addresses,
+            "usable_hosts": usable_hosts,
+            "wildcard_mask": str(network.hostmask),
+            "is_private": network.is_private,
+            "ip_class": get_ip_class(ip),
+            "workings": workings
         }
-    
+
     except Exception:
-        # If anything goes wrong during calculations
         raise ValueError("Subnet calculation failed")
+
 
 # Helper function to determine the IP class
 def get_ip_class(ip):

@@ -1,8 +1,9 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 
 const Modal = ({ result, onClose, title }) => {
     if (!result) return null;
-
+    const navigate = useNavigate();
 
     const buttonStyle = {
         backgroundColor: "#1b5e20",
@@ -29,6 +30,17 @@ const Modal = ({ result, onClose, title }) => {
         e.target.style.backgroundColor = "#1b5e20";
         e.target.style.color = "#66bb6a";
         e.target.style.boxShadow = "0 0 10px #66bb6a, 0 0 20px #66bb6a";
+    }
+
+    const handleShowWorkings = () => {
+        const dataToPass = {
+            base_network: result.base_network,
+            base_ip: result.starting_ip,
+            host_requirements: Array.isArray(result.host_requirement)
+                ? result.host_requirement
+                : String(result.host_requirement).match(/\d+/g).map(Number)
+        };
+        navigate('/vlsm-working', { state: dataToPass });
     };
 
     const renderValue = (value) => {
@@ -137,7 +149,7 @@ const Modal = ({ result, onClose, title }) => {
                     }}
                 >
                     <tbody>
-                        {result.map((item, index) => (
+                        {result.subnets.map((item, index) => (
                             <React.Fragment key={index}>
                                 <tr style={{ borderBottom: "2px solid #81c784" }}>
                                     <td
@@ -221,7 +233,23 @@ const Modal = ({ result, onClose, title }) => {
                     >
                         Close
                     </button>
+                    <button
+                        onClick={handleShowWorkings}
+                        onMouseOver={hoverIn}
+                        onMouseOut={hoverOut}
+                        style={buttonStyle}
+                    >
+                        Show Working
+                    </button>
 
+                    <button
+                        onClick={() => navigate('/vlsm-visualizer', { state: { subnets: result.subnets } })}
+                        onMouseOver={hoverIn}
+                        onMouseOut={hoverOut}
+                        style={buttonStyle}
+                    >
+                        Show Visualization
+                    </button>
 
                 </div>
             </div>
