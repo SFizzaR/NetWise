@@ -59,7 +59,7 @@ def perform_subnet_calculation(ip, subnet, subnet_mask):
 
 
 # Helper function to determine the IP class
-def get_ip_class(ip):
+def get_ip_class(ip): 
     try:
         first_octet = int(ip.split('.')[0])  # Take the first part of IP address
         if 1 <= first_octet <= 126:
