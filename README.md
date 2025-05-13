@@ -60,6 +60,9 @@ python app.py
 - Cloud deployment with persistent user sessions
 
 ## 🖥️ UI Screenshots 
+![Screenshot 2025-05-13 092130](https://github.com/user-attachments/assets/617d1037-d715-4f9d-b13f-9bdf1319cd9a)
+
+![WhatsApp Image 2025-05-03 at 22 02 20_a1e4b4c0](https://github.com/user-attachments/assets/d9500766-8247-42b2-972a-5cd6fba6b294)
 
 ## 🤝 Contributing
 
