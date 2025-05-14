@@ -23,13 +23,11 @@
 
 ## 🛠 Tech Stack
 
-| Layer         | Technologies                 |
-| ------------- | ---------------------------- |
-| **Frontend**  | React, HTML, CSS, JavaScript |
-| **Backend**   | Python (Flask), Java (CLI)   |
-| **API**       | Flask REST API               |
-| **Tools**     | VS Code, Thunder Client      |
-| **Standards** | RFC 950, RFC 1519            |
+
+**Frontend:**  React, HTML, CSS, JavaScript 
+**Backend:** Python (Flask), Java (CLI)   
+**API:** Flask REST API               
+**Tools:** VS Code, Thunder Client    
 
 
 ## 🚀 Installation
@@ -67,8 +65,4 @@ python app.py
 ## 🤝 Contributing
 
 We welcome contributions from the community!
-
-1. Fork the repository
-2. Create a new branch
-3. Make your changes
-4. Open a pull request 
+Contributions are welcome! Feel free to open an issue or submit a pull request.
